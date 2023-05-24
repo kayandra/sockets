@@ -7,14 +7,17 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "build": "vite build",
     "test": "vitest",
     "test:run": "vitest run"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@types/ws": "^8.5.4",
     "get-port": "^6.1.2",
     "jsdom": "^22.0.0",
     "uid": "^2.0.2",
+    "vite": "^4.3.8",
     "vitest": "^0.31.1",
     "ws": "^8.13.0"
   }

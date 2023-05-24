@@ -9,6 +9,8 @@ describe("Sockets", async () => {
     it("opens a connection", async () => {
       await createTestSocketsClient((onOpen) => ({ onOpen }));
     });
+
+    it.todo("autoload");
   });
 
   describe("on::message", () => {
@@ -16,7 +18,7 @@ describe("Sockets", async () => {
       await createTestSocketsClient((onMessage) => ({
         onMessage,
         onOpen(ws) {
-          ws.sendRaw("PING");
+          ws.send({ type: "MESSAGE" });
         },
       }));
     });
@@ -36,7 +38,7 @@ describe("Sockets", async () => {
       await createTestSocketsClient((onClose) => ({
         onClose,
         onOpen(ws) {
-          ws.sendRaw("CLOSE");
+          ws.send({ type: "CLOSE" });
         },
       }));
     });
@@ -45,6 +47,21 @@ describe("Sockets", async () => {
   describe("on::error", () => {
     it("handles errors", async () => {
       await createTestSocketsClient((onError) => ({ url, onError }));
+    });
+
+    it("reconnects on error", async () => {
+      await createTestSocketsClient((onReconnect) => ({
+        url,
+        onReconnect,
+        reconnectOnError: true,
+      }));
+
+      await createTestSocketsClient((onError, onReconnect) => ({
+        url,
+        onError,
+        onReconnect,
+        reconnectOnError: false,
+      }));
     });
   });
 

@@ -3,9 +3,10 @@ type Config<T> = { event: T; config: SocketsConfig };
 export type SocketsClient = ReturnType<typeof createSocketsClient>;
 export interface SocketsConfig {
   url: string;
-  defer?: boolean;
-  maxAttempts?: number;
+  autoload?: boolean;
   protocols?: string[];
+  reconnectOnError?: boolean;
+  maxAttempts?: number;
   onOpen?(ws: SocketsClient, c: Config<WebSocketEventMap["open"]>): void;
   onMessage?(ws: SocketsClient, c: Config<WebSocketEventMap["message"]>): void;
   onError?(ws: SocketsClient, c: Config<WebSocketEventMap["error"]>): void;
@@ -23,9 +24,10 @@ export function createSocketsClient(config: SocketsConfig) {
 
   const {
     url,
-    defer,
+    autoload = true,
     maxAttempts = Infinity,
     protocols = [],
+    reconnectOnError = true,
     onOpen,
     onMessage,
     onError,
@@ -35,7 +37,7 @@ export function createSocketsClient(config: SocketsConfig) {
   } = config;
   const sockets = { open, reconnect, send, sendRaw, close };
 
-  if (!defer) {
+  if (autoload) {
     open();
   }
 
@@ -45,7 +47,10 @@ export function createSocketsClient(config: SocketsConfig) {
     ws.onmessage = (event) => onMessage?.(sockets, { event, config });
     ws.onclose = (event) => onClose?.(sockets, { event, config });
     ws.onerror = (event) => {
-      reconnect();
+      if (reconnectOnError) {
+        reconnect();
+      }
+
       onError?.(sockets, { event, config });
     };
   }

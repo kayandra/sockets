@@ -1,0 +1,20 @@
+{
+  "name": "@kydr/sockets",
+  "version": "0.0.0",
+  "author": "Kayandra <git@kayandra.co>",
+  "description": "Websocket utilities",
+  "type": "module",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.4",
+    "get-port": "^6.1.2",
+    "jsdom": "^22.0.0",
+    "vitest": "^0.31.1",
+    "ws": "^8.13.0"
+  }
+}

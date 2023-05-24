@@ -1,6 +1,6 @@
 {
   "name": "@kydr/sockets",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Kayandra <git@kayandra.co>",
   "description": "Websocket utilities",
   "type": "module",
